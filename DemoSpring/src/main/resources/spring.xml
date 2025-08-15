@@ -1,0 +1,60 @@
+<!-- We also have to create this file and add configurations here -->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- bean definitions here -->
+
+    <bean id="dev" class="org.globaltechadvisor.Dev" />
+
+
+    <!-- We are using setter property to give default value
+    Note Setter and Getter must be there to use this -->
+    <!--
+    <bean id="dev2" class="org.globaltechadvisor.Dev">
+        <property name="laptop" ref="laptop" />
+        <property name="age" value="18"/>
+    </bean>
+    -->
+    <!-- Note we have e created 2 object of same class -->
+    <!--
+    <bean id="dev3" class="org.globaltechadvisor.Dev">
+        <constructor-arg index="0" value="14" />
+    </bean>
+    -->
+
+    <!-- Resolving Dependency by specifying different object
+        <bean id="laptop" class="org.globaltechadvisor.Laptop"/>
+        <bean id="desktop" class="org.globaltechadvisor.Desktop"/>
+
+        <bean id="computerIsLaptop" class="org.globaltechadvisor.MultipleAmbiguitySolved">
+            <property name="comp" ref="laptop"/>
+        </bean>
+
+        <bean id="computerIsDesktop" class="org.globaltechadvisor.MultipleAmbiguitySolved">
+            <property name="comp" ref="desktop"/>
+        </bean>
+    End - Resolving Dependency by specifying different object -->
+
+
+
+    <!-- Resolving dependency by Name
+    <bean id="comp" class="org.globaltechadvisor.Laptop"/>
+
+    <bean id="compIsResolvedByName" class="org.globaltechadvisor.MultipleAmbiguitySolved" autowire="byName"/>
+    -->
+
+
+
+    <!-- Resolving dependency by Type -->
+    <!-- This will again create ambiguity as Laptop and Computer both are Computer
+    so we will be using Primary
+    <bean id="compPrimary" class="org.globaltechadvisor.Laptop" primary="true"/>
+
+    <bean id="compIsResolvedByPrimary" class="org.globaltechadvisor.MultipleAmbiguitySolved" autowire="byName"/>
+    End - Resolving dependency by Type -->
+
+
+</beans>
