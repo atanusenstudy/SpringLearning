@@ -17,6 +17,8 @@
 		<java.version>21</java.version>
 	</properties>
 	<dependencies>
+		<!-- Just bay adding this dependency It will give us all the login form, maintains session etc
+		Note: It will by default not care of CSRF-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>

@@ -10,44 +10,24 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
-@Configuration
+
+// For details : https://www.youtube.com/watch?v=d33a1pK4OYs&list=PLsyeobzWxl7qbKoSgR5ub6jolI8-ocxCF&index=34
+// Spring Security | Custom Configuration "TELUSKO"
+// This will tell springSecurity that we will be building our own configuration for security
+//If we do not define anything on class then that means nothing will be there in the name of security
 @EnableWebSecurity
+@Configuration
 public class SecurityConfig {
 
     @Autowired
     private UserDetailsService userDetailsService;
 
-
-    @Bean
-    public AuthenticationProvider authProvider() {
-        DaoAuthenticationProvider provider=new DaoAuthenticationProvider();
-        provider.setUserDetailsService(userDetailsService);
-        provider.setPasswordEncoder(NoOpPasswordEncoder.getInstance());
-        return provider;
-    }
-
-
-
-
-
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-
-        http.csrf(customizer -> customizer.disable())
-                .authorizeHttpRequests(request -> request.anyRequest().authenticated())
-                .httpBasic(Customizer.withDefaults())
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-
-        return http.build();
-    }
-
-
-
-
-
+    //When we need UserDetailsService, which will take data from database and
+    // use this for authentication , Below I am using object of something which is already created
     /*
      * @Bean public UserDetailsService userDetailsService() {
      *
@@ -59,6 +39,53 @@ public class SecurityConfig {
      *
      * return new InMemoryUserDetailsManager(user,admin); }
      */
+
+    // This is where we are creating UserDetailsService from the database
+    @Bean
+    public AuthenticationProvider authProvider() {
+        DaoAuthenticationProvider provider=new DaoAuthenticationProvider();
+        provider.setUserDetailsService(userDetailsService);
+        //No password encoder
+        // provider.setPasswordEncoder(NoOpPasswordEncoder.getInstance());
+
+        //Using BCryptPasswordEncoder
+        provider.setPasswordEncoder(new BCryptPasswordEncoder(12));
+
+        return provider;
+    }
+
+
+
+
+
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+
+        //Disabling the CSRF
+        http.csrf(customizer -> customizer.disable());
+
+        //No one should be accessing anything without login // Enabling Authentication
+        http.authorizeHttpRequests(request -> request.anyRequest().authenticated());
+        //Note Till now no login form is there
+
+        //Enabling form login
+        //http.formLogin(Customizer.withDefaults());
+        //Note: Till now we are not able to access from Postman etc as it will work only with their login form
+        //Which is something we don't want. Like we have used Keyclock in previous project
+
+        // This will enable us to access data by sending authentication header which will be used by any UI appication like postman
+        http.httpBasic(Customizer.withDefaults());
+
+        // Make my Http stateless so not to worry about sessionId
+        http.sessionManagement(session
+                -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+
+        return http.build();
+    }
+
+
+
+
 
 
 }

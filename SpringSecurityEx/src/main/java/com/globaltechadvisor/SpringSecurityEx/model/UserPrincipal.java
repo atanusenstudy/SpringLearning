@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.Collections;
 
+//Principle(User Principle) specify that current user(so UserDetails is used) who is using so
 public class UserPrincipal implements UserDetails {
 
     /**
@@ -24,6 +25,7 @@ public class UserPrincipal implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
 
+        //By default, we are telling all the user type as user
         return Collections.singleton(new SimpleGrantedAuthority("USER"));
     }
 

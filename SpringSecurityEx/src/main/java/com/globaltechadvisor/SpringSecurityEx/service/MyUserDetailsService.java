@@ -9,6 +9,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+//This will reset default authentication
+/* This service is used to implement user login etc*/
 @Service
 public class MyUserDetailsService implements UserDetailsService {
 

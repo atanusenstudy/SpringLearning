@@ -31,6 +31,7 @@ public class StudentController {
             new Student(2,"Seb","Angular")
     ));
 
+    // will get this token and use this to pass in header: 'X-CSRF-TOKEN' for doing operations other than get
     @GetMapping("csrf-token")
     public CsrfToken getCsrfToken(HttpServletRequest request) {
         return (CsrfToken) request.getAttribute("_csrf");
