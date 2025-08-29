@@ -26,4 +26,9 @@ public class UserController {
     public List<User> getStudents(){
         return service.users();
     }
+
+    @PostMapping("/login")
+    public String login(@RequestBody User user){
+        return service.verify(user);
+    }
 }
