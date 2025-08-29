@@ -28,8 +28,9 @@ public class JWTService {
         secretKey = Base64.getEncoder().encodeToString(sk.getEncoded());
     }
 
-    public String generateToken(String username) {
+    public String generateToken(String username, String role) {
         Map<String, Object> claims = new HashMap<>();
+        claims.put("role", role); // Add role to claims
 
         return Jwts.builder()
                 .claims()
@@ -41,6 +42,7 @@ public class JWTService {
                 .signWith(getKey())
                 .compact();
     }
+
 
     private SecretKey getKey() {
         byte[] keyBite = Decoders.BASE64.decode(secretKey);
@@ -77,5 +79,10 @@ public class JWTService {
 
     private Date extractExpiration(String token) {
         return extractClaim(token, Claims::getExpiration);
+    }
+
+    // Add method to extract role from token
+    public String extractRole(String token) {
+        return extractClaim(token, claims -> claims.get("role", String.class));
     }
 }

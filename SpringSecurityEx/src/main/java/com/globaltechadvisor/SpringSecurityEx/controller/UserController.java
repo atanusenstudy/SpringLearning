@@ -1,5 +1,7 @@
 package com.globaltechadvisor.SpringSecurityEx.controller;
 
+import com.globaltechadvisor.SpringSecurityEx.dto.RefreshTokenRequest;
+import com.globaltechadvisor.SpringSecurityEx.dto.TokenResponse;
 import com.globaltechadvisor.SpringSecurityEx.model.Student;
 import com.globaltechadvisor.SpringSecurityEx.model.User;
 import com.globaltechadvisor.SpringSecurityEx.service.UserService;
@@ -28,7 +30,12 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody User user){
+    public TokenResponse login(@RequestBody User user) {
         return service.verify(user);
+    }
+
+    @PostMapping("/refreshtoken")
+    public TokenResponse refreshtoken(@RequestBody RefreshTokenRequest request) {
+        return service.refreshToken(request.getRefreshToken());
     }
 }

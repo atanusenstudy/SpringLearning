@@ -13,4 +13,12 @@ public class User {
     private String username;
     private String password;
 
+    // Add role field
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
+    // Enum for roles
+    public enum Role {
+        USER, ADMIN, MODERATOR
+    }
 }

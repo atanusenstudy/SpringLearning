@@ -90,8 +90,11 @@ public class SecurityConfig {
 
         //Now Adding authentication for al except some
         http.authorizeHttpRequests(request ->
-                request.requestMatchers("register","login")
-                        .permitAll().anyRequest().authenticated());
+                request.requestMatchers("register","login", "refreshtoken")
+                    .permitAll()
+                    .requestMatchers("/admin/**").hasRole("ADMIN")
+                    .requestMatchers("/moderator/**").hasAnyRole("MODERATOR", "ADMIN")
+                    .anyRequest().authenticated());
 
         //Enabling form login
         //http.formLogin(Customizer.withDefaults());

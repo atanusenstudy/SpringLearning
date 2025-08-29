@@ -26,7 +26,8 @@ public class UserPrincipal implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
 
         //By default, we are telling all the user type as user
-        return Collections.singleton(new SimpleGrantedAuthority("USER"));
+        //return Collections.singleton(new SimpleGrantedAuthority("USER"));
+        return Collections.singleton(new SimpleGrantedAuthority("ROLE_" + user.getRole().name()));
     }
 
     @Override
