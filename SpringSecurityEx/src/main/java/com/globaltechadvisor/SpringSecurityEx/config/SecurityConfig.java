@@ -17,6 +17,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 
 
 // For details : https://www.youtube.com/watch?v=d33a1pK4OYs&list=PLsyeobzWxl7qbKoSgR5ub6jolI8-ocxCF&index=34
@@ -25,6 +26,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 //If we do not define anything on class then that means nothing will be there in the name of security
 @EnableWebSecurity
 @Configuration
+@EnableMethodSecurity(prePostEnabled = true) // Enable method-level security
 public class SecurityConfig {
 
     @Autowired
@@ -92,8 +94,9 @@ public class SecurityConfig {
         http.authorizeHttpRequests(request ->
                 request.requestMatchers("register","login", "refreshtoken")
                     .permitAll()
+                    .requestMatchers("/api/users/**").authenticated() // Protect user management endpoints
+
                     .requestMatchers("/admin/**").hasRole("ADMIN")
-                    .requestMatchers("/moderator/**").hasAnyRole("MODERATOR", "ADMIN")
                     .anyRequest().authenticated());
 
         //Enabling form login
